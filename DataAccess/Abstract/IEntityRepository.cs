@@ -10,7 +10,6 @@ namespace DataAccess.Abstract
         List<T> GetAll(Expression<Func<T,bool>> filter =null);
         T Get(Expression<Func<T, bool>> filter);
 
-        //That method's default value is public
         void Add(T entity);
         void Update(T entity);
         void Delete(T entity);
