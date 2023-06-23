@@ -1,6 +1,7 @@
 ﻿using Core.DataAccess.EntityFramework;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,20 @@ using System.Text;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfProductDal : EfEntitiyRepoBase<Product,NorthwindContext>,IProductDal
+    public class EfProductDal : EfEntitiyRepoBase<Product, NorthwindContext>, IProductDal
     {
-       
+        public List<ProductDetailDTO> GetProductDetails()
+        {
+            using (NorthwindContext context = new NorthwindContext())
+            {
+                var result = from p in context.Products
+                             join c in context.Categories
+                             on p.CategoryId equals c.CategoryId
+                             select new ProductDetailDTO { ProductId = p.ProductId, ProductName = p.ProductName, CategoryName = c.CategoryName, UnıtsInStock = p.UnitsInStock };
+                return result.ToList();
+            }
+
+
+        }
     }
 }

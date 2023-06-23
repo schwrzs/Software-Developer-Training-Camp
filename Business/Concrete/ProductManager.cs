@@ -4,6 +4,7 @@ using System;
 using DataAccess.Abstract;
 using System.Collections.Generic;
 using System.Text;
+using Entities.DTOs;
 
 namespace Business.Concrete
 {
@@ -25,6 +26,11 @@ namespace Business.Concrete
         public List<Product> GetAllByCategoryId(int id)
         {
             return _productdal.GetAll(p => p.CategoryId == id);
+        }
+
+        public List<ProductDetailDTO> GetProductDetails()
+        {
+            return _productdal.GetProductDetails();
         }
     }
 }
