@@ -6,6 +6,10 @@ using System.Collections.Generic;
 using System.Text;
 using Entities.DTOs;
 using Core.Utilities.Results;
+using FluentValidation;
+using Business.FluentValidation;
+using Core.CrossCuttingConcerns.Validation;
+using Core.Aspectcs.Autofac.Validation;
 
 namespace Business.Concrete
 {
@@ -18,12 +22,14 @@ namespace Business.Concrete
             _productdal = productDal;
         }
 
+        [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
         {
-        if (product.ProductName.Length < 2)
-            {
-                return new ErrorResult(Messages.ProductNameInvalid);
-            }
+
+            //ValidationTool.Validate(new ProductValidator(), product);
+
+
+      
             _productdal.Add(product);
 
             return new SuccesResult(Messages.ProductAdded);
