@@ -10,6 +10,8 @@ using FluentValidation;
 using Business.FluentValidation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Aspectcs.Autofac.Validation;
+using System.Linq;
+using Core.Utilities.Business;
 
 namespace Business.Concrete
 {
@@ -28,8 +30,13 @@ namespace Business.Concrete
 
             //ValidationTool.Validate(new ProductValidator(), product);
 
+            IResult result =  BusinessRules.Run(CheckIfProductCountOfCategoryCorrect(product.ProductId), CheckIfSameNameExists(product.ProductName));
 
-      
+            if (result != null)
+            {
+                return result;
+            }
+
             _productdal.Add(product);
 
             return new SuccesResult(Messages.ProductAdded);
@@ -76,6 +83,26 @@ namespace Business.Concrete
         IDataResult<List<ProductDetailDTO>> IProductService.GetProductDetails()
         {
             throw new NotImplementedException();
+        }
+        private IResult CheckIfProductCountOfCategoryCorrect(int categoryId)
+        {
+            var result = _productdal.GetAll(p => p.CategoryId == categoryId).Count;
+            if (result >= 15)
+            {
+                return new ErrorResult(Messages.ProductCountOfCategoryError);
+            }
+            return new SuccesResult();
+        }
+
+
+        private IResult CheckIfSameNameExists(string categoryName)
+        {
+            var result = _productdal.GetAll(p => p.ProductName == categoryName).Any();
+            if (result)
+            {
+                return new ErrorResult(Messages.ProductNameAlreadyExists);
+            }
+            return new SuccesResult();
         }
     }
 }
