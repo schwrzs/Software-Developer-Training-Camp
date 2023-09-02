@@ -13,5 +13,6 @@ namespace Business.Concrete
         public static string ProductNameAlreadyExists="Same name exists";
         public static string MaintenanceTime = "Maintenance Time";
         internal static string ProductsListed="Product listed";
+        internal static string CategoryLimitExceded= "Limit Exceded";
     }
 }

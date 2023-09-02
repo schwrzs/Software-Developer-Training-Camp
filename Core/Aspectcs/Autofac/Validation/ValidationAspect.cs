@@ -11,7 +11,7 @@ using static Core.Utilities.Interceptors.Atts;
 namespace Core.Aspectcs.Autofac.Validation
 {    
     //12
-         public class ValidationAspect : MethodInterception
+         public class ValidationAspect : MethodInterception//Aspect
          {
             private Type _validatorType;
             public ValidationAspect(Type validatorType)

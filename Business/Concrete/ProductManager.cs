@@ -18,10 +18,12 @@ namespace Business.Concrete
    public class ProductManager : IProductService
     {
         IProductDal _productdal;
+        ICategoryService _categoryservice;
 
-        public ProductManager(IProductDal productDal)
+        public ProductManager(IProductDal productDal, ICategoryService categoryService)
         {
             _productdal = productDal;
+            _categoryservice = categoryService;
         }
 
         [ValidationAspect(typeof(ProductValidator))]
@@ -30,7 +32,8 @@ namespace Business.Concrete
 
             //ValidationTool.Validate(new ProductValidator(), product);
 
-            IResult result =  BusinessRules.Run(CheckIfProductCountOfCategoryCorrect(product.ProductId), CheckIfSameNameExists(product.ProductName));
+            IResult result =  BusinessRules.Run(CheckIfProductCountOfCategoryCorrect(product.ProductId), CheckIfSameNameExists(product.ProductName), 
+                CheckIfCategoryExceded());
 
             if (result != null)
             {
@@ -112,11 +115,21 @@ namespace Business.Concrete
             }
             return new SuccesResult();
         }
-
-        public IDataResult<List<Product>> All()
+        private IResult CheckIfCategoryExceded()
         {
-            throw new NotImplementedException();
+            var result = _categoryservice.GetAll();
+            if (result.Data.Count > 15)
+            {
+                return new ErrorResult(Messages.CategoryLimitExceded);
+            }
+            return new SuccesResult();
         }
+
+        //public IDataResult<List<Product>> All()
+        //{
+        //    throw new NotImplementedException();
+        //}
+
 
 
     }
