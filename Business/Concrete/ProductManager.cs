@@ -45,7 +45,15 @@ namespace Business.Concrete
 
         public IDataResult<List<Product>> GetAll()
         {
-            return new DataResult<List<Product>>(_productdal.GetAll(),true,"");
+            if (DateTime.Now.Hour == 22)
+            {
+                return new ErrorDataResult<List<Product>>(Messages.MaintenanceTime);
+            }
+            else
+            {
+                return new SuccessDataResult<List<Product>>(_productdal.GetAll(), Messages.ProductsListed);
+
+            }
         }
 
         public List<Product> GetAllByCategoryId(int id)
@@ -58,9 +66,9 @@ namespace Business.Concrete
             return _productdal.Get(p => p.ProductId == productId);
         }
 
-        public List<ProductDetailDTO> GetProductDetails()
+        public IDataResult<List<ProductDetailDTO>> GetProductDetails()
         {
-            return _productdal.GetProductDetails();
+            return new SuccessDataResult<List<ProductDetailDTO>>(_productdal.GetProductDetails());
         }
 
         IResult IProductService.Add(Product product)
@@ -104,5 +112,12 @@ namespace Business.Concrete
             }
             return new SuccesResult();
         }
+
+        public IDataResult<List<Product>> All()
+        {
+            throw new NotImplementedException();
+        }
+
+
     }
 }
