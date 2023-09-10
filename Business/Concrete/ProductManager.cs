@@ -12,7 +12,8 @@ using Core.CrossCuttingConcerns.Validation;
 using Core.Aspectcs.Autofac.Validation;
 using System.Linq;
 using Core.Utilities.Business;
-
+using Business.BusinessAspects.Autofac;
+using Business.Constants;
 namespace Business.Concrete
 {
    public class ProductManager : IProductService
@@ -27,7 +28,7 @@ namespace Business.Concrete
         }
         //Claim
         //Salting
-        //[SecuredOperation("admin","editor")]
+        [SecuredOperation("product.add", "admin")]
         [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
         {
@@ -44,7 +45,7 @@ namespace Business.Concrete
 
             _productdal.Add(product);
 
-            return new SuccesResult(Messages.ProductAdded);
+            return new SuccessResult(Messages.ProductAdded);
 
         }
 
@@ -104,7 +105,7 @@ namespace Business.Concrete
             {
                 return new ErrorResult(Messages.ProductCountOfCategoryError);
             }
-            return new SuccesResult();
+            return new SuccessResult();
         }
 
 
@@ -115,7 +116,7 @@ namespace Business.Concrete
             {
                 return new ErrorResult(Messages.ProductNameAlreadyExists);
             }
-            return new SuccesResult();
+            return new SuccessResult();
         }
         private IResult CheckIfCategoryExceded()
         {
@@ -124,7 +125,7 @@ namespace Business.Concrete
             {
                 return new ErrorResult(Messages.CategoryLimitExceded);
             }
-            return new SuccesResult();
+            return new SuccessResult();
         }
 
         //public IDataResult<List<Product>> All()

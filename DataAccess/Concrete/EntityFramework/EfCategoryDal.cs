@@ -8,7 +8,7 @@ using System.Text;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfCategoryDal : EfEntitiyRepoBase<Category, NorthwindContext>,ICategoryDal
+    public class EfCategoryDal : EfEntityRepoBase<Category, NorthwindContext>,ICategoryDal
     {
     }
 }

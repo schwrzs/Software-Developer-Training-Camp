@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Core.Entities.Concrete;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Business.Concrete
+namespace Business.Constants
 {
    public static class Messages
     {
@@ -14,5 +15,12 @@ namespace Business.Concrete
         public static string MaintenanceTime = "Maintenance Time";
         internal static string ProductsListed="Product listed";
         internal static string CategoryLimitExceded= "Limit Exceded";
+        public static string AuthorizationDenied = "Auth denied";
+        internal static string UserRegistered;
+        internal static User UserNotFound;
+        internal static User PasswordError;
+        internal static string SuccessfulLogin;
+        public static string UserAlreadyExists;
+        public static string AccessTokenCreated;
     }
 }

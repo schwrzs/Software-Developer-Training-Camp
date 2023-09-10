@@ -11,7 +11,7 @@ using System.Text;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfProductDal : EfEntitiyRepoBase<Product, NorthwindContext>, IProductDal
+    public class EfProductDal : EfEntityRepoBase<Product, NorthwindContext>, IProductDal
     {
         public List<ProductDetailDTO> GetProductDetails()
         {
