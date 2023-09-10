@@ -22,9 +22,7 @@ namespace Core.DataAccess.EntityFramework
                 var addedEntitiy = context.Entry(entity);
                 addedEntitiy.State = EntityState.Added;
                 context.SaveChanges();
-
             }
-
         }
 
         public void Delete(TEntity entity)
@@ -34,7 +32,6 @@ namespace Core.DataAccess.EntityFramework
                 var deletedEntitiy = context.Entry(entity);
                 deletedEntitiy.State = EntityState.Deleted;
                 context.SaveChanges();
-
             }
         }
 
@@ -45,7 +42,6 @@ namespace Core.DataAccess.EntityFramework
                 return context.Set<TEntity>().SingleOrDefault(filter);
             }
         }
-
         public List<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null)
         {
             using (TContext context = new TContext())
@@ -53,12 +49,10 @@ namespace Core.DataAccess.EntityFramework
                 return filter == null ? context.Set<TEntity>().ToList() : context.Set<TEntity>().Where(filter).ToList();
             }
         }
-
         public List<TEntity> GetAllByProduct(int productId)
         {
             throw new NotImplementedException();
         }
-
         public void Update(TEntity entity)
         {
             using (TContext context = new TContext())
