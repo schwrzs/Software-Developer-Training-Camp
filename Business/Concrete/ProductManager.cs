@@ -14,6 +14,8 @@ using System.Linq;
 using Core.Utilities.Business;
 using Business.BusinessAspects.Autofac;
 using Business.Constants;
+using Core.Aspectcs.Autofac.Caching;
+
 namespace Business.Concrete
 {
    public class ProductManager : IProductService
@@ -28,7 +30,7 @@ namespace Business.Concrete
         }
         //Claim
         //Salting
-        [SecuredOperation("product.add", "admin")]
+        [SecuredOperation("product.add")]
         [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
         {
@@ -48,7 +50,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.ProductAdded);
 
         }
-
+        [CacheAspect]
         public IDataResult<List<Product>> GetAll()
         {
             if (DateTime.Now.Hour == 22)
@@ -61,6 +63,8 @@ namespace Business.Concrete
 
             }
         }
+
+
 
         public List<Product> GetAllByCategoryId(int id)
         {
@@ -126,6 +130,11 @@ namespace Business.Concrete
                 return new ErrorResult(Messages.CategoryLimitExceded);
             }
             return new SuccessResult();
+        }
+
+        public IDataResult<List<Product>> GetList()
+        {
+            throw new NotImplementedException();
         }
 
         //public IDataResult<List<Product>> All()

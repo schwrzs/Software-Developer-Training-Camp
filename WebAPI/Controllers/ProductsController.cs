@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
@@ -22,12 +23,27 @@ namespace WebAPI.Controllers
             _productService = productService;
         }
         [HttpGet("getall")]
-        public List<Product> Get()
+        public IActionResult GetAll()
         {
-            //IProductService productService = new ProductManager(new EfProductDal());
+            //Swagger
+            //Dependency chain --
+
+            Thread.Sleep(5000);
+
             var result = _productService.GetAll();
-            return result.Data;
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+
         }
+        //public List<Product> Get()
+        //{
+        //    //IProductService productService = new ProductManager(new EfProductDal());
+        //    var result = _productService.GetAll();
+        //    return result.Data;
+        //}
 
         [HttpGet("getbyid")]
         public IActionResult Get(int id)
