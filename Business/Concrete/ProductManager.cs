@@ -90,7 +90,7 @@ namespace Business.Concrete
 
         IDataResult<List<Product>> IProductService.GetAllByCategoryId(int id)
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<List<Product>>(_productdal.GetAll(p => p.CategoryId == id));
         }
 
         IDataResult<Product> IProductService.GetById(int productId)
