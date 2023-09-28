@@ -7,7 +7,7 @@ using System.Text;
 using Entities.DTOs;
 using Core.Utilities.Results;
 using FluentValidation;
-using Business.FluentValidation;
+using Business;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Aspectcs.Autofac.Validation;
 using System.Linq;
@@ -15,6 +15,7 @@ using Core.Utilities.Business;
 using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Core.Aspectcs.Autofac.Caching;
+using Business.ValidationRules.FluentValidation;
 
 namespace Business.Concrete
 {
@@ -30,7 +31,7 @@ namespace Business.Concrete
         }
         //Claim
         //Salting
-        [SecuredOperation("product.add")]
+        //[SecuredOperation("product.add")]
         [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
         {
@@ -83,9 +84,14 @@ namespace Business.Concrete
 
         IResult IProductService.Add(Product product)
         {
+            IResult result = BusinessRules.Run(CheckIfProductCountOfCategoryCorrect(product.ProductId), CheckIfSameNameExists(product.ProductName),
+                CheckIfCategoryExceded());
+            if (result != null)
+            {
+                return result;
+            }
             _productdal.Add(product);
-
-            return new Result(true, "Product addded");
+            return new SuccessResult(Messages.ProductAdded);
         }
 
         IDataResult<List<Product>> IProductService.GetAllByCategoryId(int id)
@@ -113,9 +119,9 @@ namespace Business.Concrete
         }
 
 
-        private IResult CheckIfSameNameExists(string categoryName)
+        private IResult CheckIfSameNameExists(string productName)
         {
-            var result = _productdal.GetAll(p => p.ProductName == categoryName).Any();
+            var result = _productdal.GetAll(p => p.ProductName == productName).Any();
             if (result)
             {
                 return new ErrorResult(Messages.ProductNameAlreadyExists);
