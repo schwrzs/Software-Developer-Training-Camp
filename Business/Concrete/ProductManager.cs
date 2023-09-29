@@ -19,7 +19,7 @@ using Business.ValidationRules.FluentValidation;
 
 namespace Business.Concrete
 {
-   public class ProductManager : IProductService
+    public class ProductManager : IProductService
     {
         IProductDal _productdal;
         ICategoryService _categoryservice;
@@ -31,7 +31,7 @@ namespace Business.Concrete
         }
         //Claim
         //Salting
-        //[SecuredOperation("product.add")]
+        [SecuredOperation("product.add")]
         [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
         {
